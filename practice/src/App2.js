@@ -201,6 +201,7 @@ const App = () => {
   // console.log(list, "list", data, "data");
 
   const resetTask = () => {
+    setEditKey(null)
     console.log("resetting....");
     setData({ ...data, ...initialValue });
   };
