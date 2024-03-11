@@ -31,53 +31,6 @@ const App = () => {
   const [editKey, setEditKey] = useState(false);
   const [listErr, setListErr] = useState("");
 
-  // useEffect(() => {
-  // localStorage.setItem('data1', JSON.stringify(list));
-  //   localStorage.setItem('data2', JSON.stringify(fList));
-  // console.log('mounted');
-  // }, [])
-
-  // useEffect(() => {
-  //   localStorage.setItem("items", JSON.stringify(list));
-  //   localStorage.setItem("items1", JSON.stringify(fList));
-  //   console.log(list, fList, '[list]');
-  // }, [list]);
-
-  // useEffect(() => {
-  //   const items = JSON.parse(localStorage.getItem("items"));
-  //   const items1 = JSON.parse(localStorage.getItem("items1"));
-  //   if (items) {
-  //     console.log(items, 'item1');
-  //     setList(items);
-  //   }
-  //   if (items1) {
-  //     console.log(items, 'item2f');
-  //     setFList(items1);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem("data3", JSON.stringify(list));
-  //   const storedDataString = JSON.parse(localStorage.getItem("data3"));
-  //   console.log(storedDataString);
-  //   if (storedDataString.length) {
-  //     const storedData = storedDataString;
-  //     console.log("Helloooooooooooo");
-  //     // setList(storedData);
-  //   }
-  //   console.log(list, "list-local");
-  //   // localStorage.setItem('data4', JSON.stringify(fList));
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem('data5', JSON.stringify(list));
-  //   localStorage.setItem('data6', JSON.stringify(fList));
-  // })
-
-  // useEffect(() => {
-  //   localStorage.setItem("list", JSON.stringify(list));
-  // }, [list]);
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("list"));
     const user1 = JSON.parse(localStorage.getItem("fList"));
@@ -97,31 +50,19 @@ const App = () => {
 
   //setting value to the variable
   const handleChange = (e) => {
-    // setData({...data,
-    //     id: data.length
-    // })
-    // console.log(data, 'handlet');
     if (e.target.name === "contact") {
-      let copy = { ...data };
       if (e.target.checked) {
-        // setData({...data, contact: data.contact.push(e.target.value)})
         setData({ ...data, contact: [...data.contact, e.target.value] });
-        // copy.contact.push(e.target.value)
         console.log(data, "copy");
       } else {
-        // copy.contact = data.contact.filter(v => v !== e.target.value)
         setData({
           ...data,
           contact: data.contact.filter((v) => v !== e.target.value),
         });
       }
-      // setData(copy)
-      // e.target.checked ? setData({...data, [e.target.name] : [...data.contact,e.target.value]}) : setData({...data, [e.target.name]: data.contact.filter(v => v !== e.target.value)})
-      // e.target.checked ? setData({...data, contact : [...contact,e.target.value]}) : setData({...data, contact: contact.filter(v => v !== e.target.value)})
     } else {
       setData({ ...data, [e.target.name]: e.target.value });
     }
-    // console.log(data, 'handled');
   };
 
   const addTask = (num) => {
@@ -137,39 +78,23 @@ const App = () => {
         );
         return JSON.stringify(l.number) === JSON.stringify(data.number);
       });
-    console.log(duplicate, "compare");
     //NUMBER VALIDATION
     if (!data.firstName.trim() || !data.lastName.trim()) {
-      // if (!data.firstName.trim() || !data.lastName.trim()) {
-        alert("Name should be filled");
-      // } 
-      // else {
-      //   alert("Number should be filled");
-      // }
-    } else if (
-      // data.firstName.trim() === data.middleName.trim() ||
-      data.firstName.trim() === data.lastName.trim()
-      // data.middleName.trim() === data.lastName.trim()
-    ) {
+      alert("Name should be filled");
+    } else if (data.firstName.trim() === data.lastName.trim()) {
       alert("First Name and Last Name should be unique");
     } else if (!num.match("[0-9]{10}")) {
       alert("Please provide valid phone number");
     } else if (edit) {
-      // const duplicate = list.filter((l, i) => l.number === data.number)
-      // if(!duplicate.length){
-      // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-      // let copy = { ...data };
       if (JSON.stringify(data) === JSON.stringify(edit)) {
         alert("You didn't update anything");
       } else {
         const updateUser = list.map((l) => {
           if (l.id === edit.id) {
-            // console.log('hii', l.id, edit, data, 'update');
             return { ...l, ...data };
           }
           return l;
         });
-        console.log(updateUser, "update");
         setList(updateUser);
         setFList(updateUser);
         localStorage.setItem("list", JSON.stringify(updateUser));
@@ -178,9 +103,6 @@ const App = () => {
         setEdit(false);
         setEditKey(false);
       }
-      //  } else {
-      // setListErr("Number already found")
-      //  }
     } else if (duplicate.length & !edit) {
       console.log(duplicate, "compare", edit);
       setListErr("User with this number already exist, Try to add new number");
@@ -198,18 +120,14 @@ const App = () => {
       );
     }
   };
-  // console.log(list, "list", data, "data");
 
   const resetTask = () => {
-    setEditKey(null)
-    console.log("resetting....");
+    setEditKey(null);
     setData({ ...data, ...initialValue });
   };
 
   const search = (searchValue) => {
     const data = list.filter((l) => {
-      console.log(l.firstName, searchValue);
-      console.log(l.firstName.includes(searchValue));
       return l.firstName.includes(searchValue);
     });
     console.log(data);
@@ -229,7 +147,6 @@ const App = () => {
       console.log(deletedUser);
       setFList(deletedUser);
       setList(deletedUser);
-      // localStorage.
       localStorage.setItem("list", JSON.stringify(deletedUser));
       localStorage.setItem("fList", JSON.stringify(deletedUser));
     } else {
