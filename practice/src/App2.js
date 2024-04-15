@@ -12,14 +12,14 @@ const App = () => {
   //Initial Value
   const initialValue = {
     id: "",
-    firstName: "",
+    firstName: "nnn",
     middleName: "",
-    lastName: "",
+    lastName: "oooo",
     gender: "Female",
-    number: "",
+    number: "7678909876",
     marital: "",
     join: "Yes",
-    contact: ["E-mail"],
+    contact: ["E-mail", "Phone"],
   };
 
   //State
@@ -52,7 +52,12 @@ const App = () => {
   const handleChange = (e) => {
     if (e.target.name === "contact") {
       if (e.target.checked) {
-        setData({ ...data, contact: [...data.contact, e.target.value] });
+        setData((pre) => ({
+          ...pre,
+          contact: [...pre.contact, e.target.value],
+          // contact: pre.contact.push(e.target.value),
+        }));
+        // setData({ ...data, contact: [...data.contact, e.target.value] });
         console.log(data, "copy");
       } else {
         setData({
@@ -91,6 +96,8 @@ const App = () => {
       } else {
         const updateUser = list.map((l) => {
           if (l.id === edit.id) {
+            const a = { ...l, ...data };
+            console.log(l, data, "lllllllll", a);
             return { ...l, ...data };
           }
           return l;
@@ -104,12 +111,11 @@ const App = () => {
         setEditKey(false);
       }
     } else if (duplicate.length & !edit) {
-      console.log(duplicate, "compare", edit);
       setListErr("User with this number already exist, Try to add new number");
     } else {
       setList([...list, { ...data, id: new Date().getTime() }]);
       setFList([...fList, { ...data, id: new Date().getTime() }]);
-      setData({ ...data, ...initialValue });
+      setData(initialValue);
       localStorage.setItem(
         "list",
         JSON.stringify([...list, { ...data, id: new Date().getTime() }])
@@ -130,27 +136,24 @@ const App = () => {
     const data = list.filter((l) => {
       return l.firstName.includes(searchValue);
     });
-    console.log(data);
     setFList(data);
   };
 
   const editTask = (user) => {
-    setData({ ...data, ...user });
+    // setData({ ...data, ...user });
+    setData(user);
     setEdit(user);
     setEditKey(user.id);
   };
 
   const deleteUser = (id) => {
-    console.log(editKey, id, "delete");
     if (editKey !== id) {
       const deletedUser = list.filter((l) => l.id !== id);
-      console.log(deletedUser);
       setFList(deletedUser);
       setList(deletedUser);
       localStorage.setItem("list", JSON.stringify(deletedUser));
       localStorage.setItem("fList", JSON.stringify(deletedUser));
     } else {
-      console.log("You can't delete");
       alert("You can't delete this user, as it is in edit mode");
     }
   };
@@ -241,7 +244,7 @@ const App = () => {
             <input
               type="checkbox"
               value="E-mail"
-              checked={data.contact.includes("E-mail")}
+              checked={data?.contact?.includes("E-mail")}
               className="border border-black w-5 h-5"
               name="contact"
               onChange={handleChange}
@@ -250,7 +253,7 @@ const App = () => {
             <input
               type="checkbox"
               value="Phone"
-              checked={data.contact.includes("Phone")}
+              checked={data?.contact?.includes("Phone")}
               className="border border-black ml-5 w-5 h-5"
               name="contact"
               onChange={handleChange}

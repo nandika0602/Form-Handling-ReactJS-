@@ -18,7 +18,9 @@ const App3 = () => {
 
   const handleFocus = () => {
     const item = list.filter((listItem) =>
-      listItem.name.toLowerCase().includes(inputValue.current.value.toLowerCase())
+      listItem.name
+        .toLowerCase()
+        .includes(inputValue.current.value.toLowerCase())
     );
     if (!selectedList.length) {
       setFilteredList(item);
@@ -87,7 +89,6 @@ const App3 = () => {
                 onClick={() => addItem(list)}
                 key={list.id}
               >
-                {console.log(list)}
                 <span className="text-xl">{list["name"]}</span>
                 <br />
               </div>
